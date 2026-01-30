@@ -211,24 +211,26 @@ function addStickerToCanvas(imageUrl) {
 // QUOTE OF THE DAY
 // ===================================
 function addQuote() {
-        console.log("Načítám citát z API Ninjas...");
+    console.log("Načítám citát z API Ninjas...");
 
-        var apiKey = 'J4o2qlvndMx94OgjJ7Yuap8YGShT5eUFeDbNksGA';
-        var apiUrl = 'https://api.api-ninjas.com/v1/quotes';
+    var apiKey = 'J4o2qlvndMx94OgjJ7Yuap8YGShT5eUFeDbNksGA'; 
+    var apiUrl = 'https://api.api-ninjas.com/v1/quotes';
 
-        $.ajax({
-            method: 'GET',
-            url: apiUrl,
-            headers: { 'X-Api-Key': apiKey },
-            contentType: 'application/json',
-            success: function (result) {
-                console.log("Citát úspěšně přijat:", result);
+    $.ajax({
+        method: 'GET',
+        url: apiUrl,
+        headers: { 'X-Api-Key': apiKey },
+        contentType: 'application/json',
+        success: function(result) {
+            var quoteData = result[0];
+            var quoteText = '"' + quoteData.quote + '"\n— ' + quoteData.author;
 
-                // API Ninjas vrací pole, vezmeme první objekt
-                var quoteData = result[0];
-                var quoteText = '"' + quoteData.quote + '"\n— ' + quoteData.author;
+            // ZEPTÁME SE UŽIVATELE:
+            // confirm() zobrazí okno s tlačítky OK a Zrušit
+            var userWantsIt = confirm("Líbí se ti tento citát?\n\n" + quoteText);
 
-                // Vytvoření elementu na canvasu
+            if (userWantsIt) {
+                // Pokud klikne na OK, vytvoříme element
                 var quoteElement = $('<div>')
                     .addClass('canvas-element text-element')
                     .text(quoteText)
@@ -243,16 +245,18 @@ function addQuote() {
                     });
 
                 $('#canvas').append(quoteElement);
-
-                // Aktivace pohybu (interact.js)
                 makeDraggable(quoteElement[0]);
-            },
-            error: function (jqXHR) {
-                console.error('Chyba API:', jqXHR.responseText);
-                alert('Chyba při volání API Ninjas. Zkontroluj konzoli (F12).');
+                console.log("Citát přidán na plochu.");
+            } else {
+                console.log("Uživatel citát odmítl.");
             }
-        });
-    }
+        },
+        error: function(jqXHR) {
+            console.error('Chyba API:', jqXHR.responseText);
+            alert('Chyba při volání API Ninjas.');
+        }
+    });
+}
     
 // ===================================
 // CLEAR CANVAS
@@ -366,4 +370,5 @@ function loadFromLocalStorage() {
     });
 
     console.log("Načteno " + elementsData.length + " elementů!");
+
 }
