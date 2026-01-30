@@ -131,36 +131,35 @@ function dragMoveListener(event) {
 // GIPHY API - vyhledávání nálepek
 // ===================================
 function searchGiphy() {
-    var query = $('#searchinpt').val();  // Co uživatel napsal
+    var query = $('#searchinpt').val(); 
 
     if (query === '') {
-        alert('Napiš něco do search boxu!');
+        alert('Napiš něco do vyhledávání!');
         return;
     }
 
-    console.log("Hledám na GIPHY: " + query);
+    console.log("Hledám nálepky pro: " + query);
 
-    // GIPHY API klíč (tohle je veřejný demo klíč, funguje pro testování)
-    var apiKey = 'YOUR_API_KEY_HERE';  // ← MUSÍŠ SI ZÍSKAT VLASTNÍ!
+    var apiKey = 'p9YyjKfe2qOIOcCsodFX0RWFWtIPUXeJ'; 
     var apiUrl = 'https://api.giphy.com/v1/stickers/search';
 
-    // AJAX požadavek
     $.ajax({
         url: apiUrl,
         method: 'GET',
         data: {
             api_key: apiKey,
-            q: query,        // co hledáme
-            limit: 20,       // kolik výsledků
-            rating: 'g'      // jen family-friendly obsah
+            q: query,
+            limit: 20,
+            rating: 'g',
+            lang: 'cs' // Podpora češtiny při vyhledávání
         },
         success: function (response) {
-            console.log("GIPHY odpovědělo:", response);
+            console.log("GIPHY data dorazila!");
             displayGiphyResults(response.data);
         },
         error: function (error) {
-            console.error("Chyba při načítání z GIPHY:", error);
-            alert('Něco se pokazilo při hledání :(');
+            console.error("Chyba při komunikaci s GIPHY:", error);
+            alert('GIPHY API má asi špatný den. Zkus to znovu.');
         }
     });
 }
@@ -372,6 +371,7 @@ function loadFromLocalStorage() {
     console.log("Načteno " + elementsData.length + " elementů!");
 
 }
+
 
 
 
