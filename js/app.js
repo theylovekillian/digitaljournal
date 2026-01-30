@@ -1,75 +1,43 @@
-// ===================================
-// CREATIVE CHAOS - Digital Junk Journal
-// ===================================
-
-// Počkáme, až se načte celá stránka
 $(document).ready(function () {
     console.log("Aplikace naběhla! 🎨");
-
-    // Tady budeme psát náš kód
-
     initApp();
 });
 
-// Hlavní inicializační funkce
 function initApp() {
     console.log("Inicializuji aplikaci...");
-
-    // 1. Nastavíme posluchače událostí (event listeners)
     setupEventListeners();
-
-    // 2. Načteme uložená data z localStorage (pokud existují)
     loadFromLocalStorage();
 }
-
-// ===================================
-// EVENT LISTENERS - reakce na kliknutí
-// ===================================
 function setupEventListeners() {
-
-    // Tlačítko "Add text"
     $('#addtextbtn').click(function () {
         console.log("Klikl jsi na Add text!");
         addTextElement();
     });
-
-    // Tlačítko "Save"
     $('#savebtn').click(function () {
         console.log("Klikl jsi na Save!");
         saveToLocalStorage();
     });
-
-    // Tlačítko "Clear page"
     $('#clearbtn').click(function () {
         console.log("Klikl jsi na Clear page!");
         clearCanvas();
     });
-
-    // Tlačítko "Search" (pro GIPHY)
     $('#searchbtn').click(function () {
         console.log("Klikl jsi na Search!");
         searchGiphy();
     });
-
-    // Enter v search boxu = automaticky vyhledej
     $('#searchinpt').keypress(function (e) {
         if (e.which === 13) { // 13 = Enter klávesa
             searchGiphy();
         }
     });
-
-    // Tlačítko "QOTD" (Quote of the Day)
     $('#qotdbtn').click(function () {
         console.log("Klikl jsi na QOTD!");
         addQuote();
     });
 }
 
-// ===================================
-// PŘIDÁVÁNÍ TEXTOVÉHO POLE
-// ===================================
+
 function addTextElement() {
-    // Vytvoříme nový div element
     var textElement = $('<div>')
         .addClass('canvas-element text-element')
         .attr('contenteditable', 'true')  // Dá se do toho psát
@@ -79,57 +47,38 @@ function addTextElement() {
             top: '100px'     // Pozice shora
         });
 
-    // Přidáme ho na canvas
     $('#canvas').append(textElement);
-
-    // Nastavíme drag & drop
-    makeDraggable(textElement[0]);  // [0] = převod z jQuery na běžný DOM element
-
+    makeDraggable(textElement[0]);
     console.log("Přidal jsem nový text element!");
 }
 
-// ===================================
-// DRAG & DROP pomocí Interact.js
-// ===================================
 function makeDraggable(element) {
     interact(element)
         .draggable({
-            // Povolit tažení
-            inertia: true,  // Plynulé dotažení
+            inertia: true,
             modifiers: [
                 interact.modifiers.restrictRect({
-                    restriction: 'parent',  // Nemůže se vytáhnout mimo canvas
+                    restriction: 'parent',
                     endOnly: true
                 })
             ],
             autoScroll: true,
-
-            // Co se děje při tažení
             listeners: {
                 move: dragMoveListener
             }
         });
 }
 
-// Funkce co se volá při každém pohybu myši během tažení
 function dragMoveListener(event) {
     var target = event.target;
-
-    // Získáme současnou pozici elementu
     var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
     var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-
-    // Přesuneme element
     target.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
-
-    // Uložíme novou pozici do atributu
     target.setAttribute('data-x', x);
     target.setAttribute('data-y', y);
 }
 
-// ===================================
-// GIPHY API - vyhledávání nálepek
-// ===================================
+<!-- GIPHYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY-->
 function searchGiphy() {
     var query = $('#searchinpt').val(); 
 
@@ -371,6 +320,7 @@ function loadFromLocalStorage() {
     console.log("Načteno " + elementsData.length + " elementů!");
 
 }
+
 
 
 
