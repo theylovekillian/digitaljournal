@@ -227,8 +227,7 @@ function addQuote() {
 
             // ZEPTÁME SE UŽIVATELE:
             // confirm() zobrazí okno s tlačítky OK a Zrušit
-            var userWantsIt = confirm("Líbí se ti tento citát?\n" 
-                                      "Potvrď a vlož ho na svou stránku \n\n" + quoteText);
+            var userWantsIt = confirm("Líbí se ti tento citát? Potvrď a vlož ho na svou stránku \n\n" + quoteText);
 
             if (userWantsIt) {
                 // Pokud klikne na OK, vytvoříme element
@@ -373,5 +372,6 @@ function loadFromLocalStorage() {
     console.log("Načteno " + elementsData.length + " elementů!");
 
 }
+
 
 
