@@ -211,38 +211,49 @@ function addStickerToCanvas(imageUrl) {
 // QUOTE OF THE DAY
 // ===================================
 function addQuote() {
-    console.log("Načítám citát...");
+        console.log("Načítám citát z API Ninjas...");
 
-    // Použijeme Quotable API (funguje bez CORS problémů)
-    $.ajax({
-        url: 'https://api.quotable.io',
-        method: 'GET',
-        success: function (response) {
-            console.log("Citát:", response);
+        var apiKey = 'J4o2qlvndMx94OgjJ7Yuap8YGShT5eUFeDbNksGA';
+        var apiUrl = 'https://api.api-ninjas.com/v1/quotes';
 
-            var quoteText = '"' + response.content + '"\n- ' + response.author;
+        $.ajax({
+            method: 'GET',
+            url: apiUrl,
+            headers: { 'X-Api-Key': apiKey },
+            contentType: 'application/json',
+            success: function (result) {
+                console.log("Citát úspěšně přijat:", result);
 
-            // Vytvoříme text element s citátem
-            var quoteElement = $('<div>')
-                .addClass('canvas-element text-element')
-                .text(quoteText)
-                .css({
-                    left: '150px',
-                    top: '300px',
-                    fontStyle: 'italic',
-                    fontSize: '20px'
-                });
+                // API Ninjas vrací pole, vezmeme první objekt
+                var quoteData = result[0];
+                var quoteText = '"' + quoteData.quote + '"\n— ' + quoteData.author;
 
-            $('#canvas').append(quoteElement);
-            makeDraggable(quoteElement[0]);
-        },
-        error: function (error) {
-            console.error("Chyba při načítání citátu:", error);
-            alert('Nepodařilo se načíst citát');
-        }
-    });
-}
+                // Vytvoření elementu na canvasu
+                var quoteElement = $('<div>')
+                    .addClass('canvas-element text-element')
+                    .text(quoteText)
+                    .css({
+                        left: '100px',
+                        top: '150px',
+                        fontStyle: 'italic',
+                        fontSize: '22px',
+                        padding: '15px',
+                        maxWidth: '300px',
+                        lineHeight: '1.4'
+                    });
 
+                $('#canvas').append(quoteElement);
+
+                // Aktivace pohybu (interact.js)
+                makeDraggable(quoteElement[0]);
+            },
+            error: function (jqXHR) {
+                console.error('Chyba API:', jqXHR.responseText);
+                alert('Chyba při volání API Ninjas. Zkontroluj konzoli (F12).');
+            }
+        });
+    }
+    
 // ===================================
 // CLEAR CANVAS
 // ===================================
@@ -355,5 +366,4 @@ function loadFromLocalStorage() {
     });
 
     console.log("Načteno " + elementsData.length + " elementů!");
-
 }
