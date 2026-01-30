@@ -215,7 +215,7 @@ function addQuote() {
 
     // Použijeme Quotable API (funguje bez CORS problémů)
     $.ajax({
-        url: 'https://api.quotable.io/random',
+        url: 'https://api.quotable.io',
         method: 'GET',
         success: function (response) {
             console.log("Citát:", response);
@@ -355,4 +355,5 @@ function loadFromLocalStorage() {
     });
 
     console.log("Načteno " + elementsData.length + " elementů!");
+
 }
