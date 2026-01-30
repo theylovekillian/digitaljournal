@@ -78,7 +78,7 @@ function dragMoveListener(event) {
     target.setAttribute('data-y', y);
 }
 
-<!-- GIPHYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY-->
+// GIPHYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
 function searchGiphy() {
     var query = $('#searchinpt').val(); 
 
@@ -100,7 +100,7 @@ function searchGiphy() {
             q: query,
             limit: 20,
             rating: 'g',
-            lang: 'cs' // Podpora češtiny při vyhledávání
+            lang: 'cs'
         },
         success: function (response) {
             console.log("GIPHY data dorazila!");
@@ -113,33 +113,25 @@ function searchGiphy() {
     });
 }
 
-// Zobrazíme výsledky z GIPHY
 function displayGiphyResults(stickers) {
     var resultsDiv = $('#searchresults');
-    resultsDiv.empty();  // Smažeme předchozí výsledky
+    resultsDiv.empty();  
 
     if (stickers.length === 0) {
-        resultsDiv.html('<p>Nic jsem nenašel 😢</p>');
+        resultsDiv.html('<p>Nic jsem nenašel :(</p>');
         return;
     }
-
-    // Pro každý sticker vytvoříme obrázek
     stickers.forEach(function (sticker) {
         var img = $('<img>')
             .attr('src', sticker.images.fixed_height_small.url)
             .attr('alt', sticker.title)
             .click(function () {
-                // Když klikneš na sticker, přidá se na canvas
                 addStickerToCanvas(sticker.images.original.url);
             });
-
         resultsDiv.append(img);
     });
-
     console.log("Zobrazil jsem " + stickers.length + " stickerů");
 }
-
-// Přidání stickeru na canvas
 function addStickerToCanvas(imageUrl) {
     var stickerElement = $('<div>')
         .addClass('canvas-element sticker-element')
@@ -155,9 +147,7 @@ function addStickerToCanvas(imageUrl) {
     console.log("Přidal jsem sticker na canvas!");
 }
 
-// ===================================
-// QUOTE OF THE DAY
-// ===================================
+// QUOTEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 function addQuote() {
     console.log("Načítám citát z API Ninjas...");
 
@@ -172,13 +162,8 @@ function addQuote() {
         success: function(result) {
             var quoteData = result[0];
             var quoteText = '"' + quoteData.quote + '"\n— ' + quoteData.author;
-
-            // ZEPTÁME SE UŽIVATELE:
-            // confirm() zobrazí okno s tlačítky OK a Zrušit
             var userWantsIt = confirm("Líbí se ti tento citát? Potvrď tlačítkem *OK* a vloží se na tvou stránku \n\n" + quoteText);
-
             if (userWantsIt) {
-                // Pokud klikne na OK, vytvoříme element
                 var quoteElement = $('<div>')
                     .addClass('canvas-element text-element')
                     .text(quoteText)
@@ -206,38 +191,24 @@ function addQuote() {
     });
 }
     
-// ===================================
 // CLEAR CANVAS
-// ===================================
 function clearCanvas() {
     if (confirm('Opravdu chceš smazat všechno?')) {
-        $('#canvas').empty();  // Smaže všechny elementy
+        $('#canvas').empty(); 
         console.log("Canvas vyčištěn!");
     }
 }
 
-// ===================================
-// LOCAL STORAGE - ukládání dat
-// ===================================
+//LOC STORAGE
 function saveToLocalStorage() {
     console.log("Ukládám do localStorage...");
-
-    // Pole pro uložení všech elementů
     var elementsData = [];
-
-    // Projdeme všechny elementy na canvasu
     $('.canvas-element').each(function () {
         var element = $(this);
-
-        // Zjistíme typ elementu
         var isText = element.hasClass('text-element');
         var isSticker = element.hasClass('sticker-element');
-
-        // Získáme pozici
         var x = parseFloat(element.attr('data-x')) || 0;
         var y = parseFloat(element.attr('data-y')) || 0;
-
-        // Vytvoříme objekt s daty
         var elementData = {
             type: isText ? 'text' : 'sticker',
             x: x,
@@ -245,49 +216,31 @@ function saveToLocalStorage() {
             left: element.css('left'),
             top: element.css('top')
         };
-
-        // Podle typu přidáme specifická data
         if (isText) {
             elementData.content = element.text();
             elementData.fontSize = element.css('font-size');
         } else if (isSticker) {
             elementData.imageUrl = element.find('img').attr('src');
         }
-
         elementsData.push(elementData);
     });
-
-    // Převedeme pole objektů na JSON string
     var jsonString = JSON.stringify(elementsData);
-
-    // Uložíme do localStorage
     localStorage.setItem('journalData', jsonString);
-
     console.log("Uloženo! Data:", elementsData);
     alert('Uloženo! ✓');
 }
 
-// Načtení dat z localStorage
 function loadFromLocalStorage() {
     console.log("Načítám z localStorage...");
-
-    // Získáme JSON string z localStorage
     var jsonString = localStorage.getItem('journalData');
-
     if (!jsonString) {
         console.log("Žádná uložená data");
         return;
     }
-
-    // Převedeme JSON string zpět na pole objektů
     var elementsData = JSON.parse(jsonString);
-
     console.log("Načtená data:", elementsData);
-
-    // Pro každý element vytvoříme znovu element na canvasu
     elementsData.forEach(function (data) {
         var element;
-
         if (data.type === 'text') {
             element = $('<div>')
                 .addClass('canvas-element text-element')
@@ -308,7 +261,6 @@ function loadFromLocalStorage() {
                 });
         }
 
-        // Nastavíme pozici z drag & drop
         element.attr('data-x', data.x);
         element.attr('data-y', data.y);
         element.css('transform', 'translate(' + data.x + 'px, ' + data.y + 'px)');
@@ -320,6 +272,7 @@ function loadFromLocalStorage() {
     console.log("Načteno " + elementsData.length + " elementů!");
 
 }
+
 
 
 
