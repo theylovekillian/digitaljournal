@@ -1,0 +1,157 @@
+/* Reset a základní nastavení */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Caveat', cursive;
+    background-color: #f5e6d3;
+    overflow: hidden;
+    height: 100vh;
+}
+
+/* Horní navigace */
+.top-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 15px;
+    display: flex;
+    gap: 10px;
+    z-index: 100;
+    border-bottom: 3px solid #333;
+}
+
+.top-nav button {
+    padding: 10px 20px;
+    font-family: 'Indie Flower', cursive;
+    font-size: 18px;
+    border: 2px solid #333;
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.top-nav button:hover {
+    background-color: #333;
+    color: #fff;
+}
+
+/* Hlavní plocha (canvas) */
+.canvas {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    right: 300px;
+    bottom: 0;
+    background-color: #faf8f3;
+    background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 31px, #e5d9c5 31px, #e5d9c5 32px);
+    overflow: auto;
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    top: 70px;
+    right: 0;
+    width: 300px;
+    bottom: 0;
+    background-color: #fff;
+    border-left: 3px solid #333;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* ZMĚNĚNO: search-box → searchbox */
+.searchbox {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 20px;
+}
+
+.searchbox input {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid #333;
+    font-size: 16px;
+}
+
+.searchbox button {
+    padding: 10px 15px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+/* ZMĚNĚNO: search-results → searchresults */
+.searchresults {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.searchresults img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border 0.2s;
+}
+
+.searchresults img:hover {
+    border-color: #333;
+}
+
+/* ZMĚNĚNO: qotd-button → qotdbtn */
+.qotdbtn {
+    width: 100%;
+    padding: 15px;
+    margin-top: 20px;
+    background-color: #2d5016;
+    color: #fff;
+    border: none;
+    font-family: 'Caveat', cursive;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 25px;
+}
+
+.qotdbtn:hover {
+    background-color: #1f3a0f;
+}
+
+/* Elementy na canvasu */
+.canvas-element {
+    position: absolute;
+    cursor: move;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 2px dashed #999;
+    min-width: 50px;
+    min-height: 30px;
+}
+
+.canvas-element.text-element {
+    font-family: 'Shadows Into Light', cursive;
+    font-size: 24px;
+    white-space: pre-wrap;
+}
+
+.canvas-element.sticker-element {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+}
+
+.canvas-element img {
+    max-width: 200px;
+    pointer-events: none;
+}
